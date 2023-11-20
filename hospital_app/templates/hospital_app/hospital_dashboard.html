@@ -1,0 +1,225 @@
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Dashboard</title>
+    <style>
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(135deg, #fffde7, #fff9c4);
+    background-attachment: fixed;
+    background-image: url('https://raw.githubusercontent.com/saatvik333/hbms-dbms/main/static/assets/bg.jpg');
+}
+        header {
+            background-color: #333;
+            padding: 15px 0;
+            text-align: center;
+            color: white;
+        }
+
+            header a {
+                color: white;
+                text-decoration: none;
+                margin: 0 15px;
+                font-size: 18px;
+            }
+.dashboard-container {
+    max-width: 960px;
+    margin: 2em auto;
+    padding: 2em;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.dashboard-title {
+    font-size: 1.5em;
+    color: #333;
+    text-align: center;
+    padding: 0.5em;
+}
+
+.bed-type {
+    background: #fff8e1;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-left: 4px solid #ffd600;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.stat-title {
+    font-size: 1em;
+    font-weight: 600;
+    color: #666;
+}
+
+.stat-value {
+    font-size: 1.8em;
+    text-align: center;
+    color: #333;
+}
+.disbtn{
+    color:black;
+    background-color:cornflowerblue;
+}
+
+.reservations-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2em;
+}
+
+.reservations-table th,
+.reservations-table td {
+    padding: 0.5em;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    text-align: left;
+}
+
+.reservations-table th {
+    background-color: #fffde7;
+}
+
+.reservations-table a {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.reservations-table a[href*="confirm"] {
+    background-color: #81c784;
+}
+
+.reservations-table a[href*="cancel"] {
+    background-color: #e57373;
+}
+        .active {
+            background-color: #f7f7f7;
+            font-size: large;
+            color: #333;
+            padding: 5px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'dashboard' %}" class="active">DashBoard</a>
+
+        <a href="{% url 'Add_Update' hospital.id %}">Add Beds</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </header>
+    <div class="dashboard-container">
+        <h1 class="dashboard-title">Hospital Dashboard</h1>
+
+        <h2 class="reservations-title">Bed Status</h2>
+
+
+        <div class="bed-status-container">
+            <!-- Repeat this block for each bed type (ICU, General, Private) -->
+            <div class="bed-type">
+                <h3>ICU Beds</h3>
+                <div class="stat">Total: {{ icu_beds.total }}</div>
+                <div class="stat">Occupied: {{ icu_beds.occupied }}</div>
+                <div class="stat">Available: {{ icu_beds.available }}</div>
+            </div>
+
+            <div class="bed-type">
+                <h3>General Beds</h3>
+                <div class="stat">Total: {{ general_beds.total }}</div>
+                <div class="stat">Occupied: {{ general_beds.occupied }}</div>
+                <div class="stat">Available: {{ general_beds.available }}</div>
+            </div>
+
+            <div class="bed-type">
+                <h3>Private Beds</h3>
+                <div class="stat">Total: {{ private_beds.total }}</div>
+                <div class="stat">Occupied: {{ private_beds.occupied }}</div>
+                <div class="stat">Available: {{ private_beds.available }}</div>
+            </div>
+        </div>
+
+        <!-- <div class="stats-container">
+            <div class="stat">
+                <p class="stat-title">Total Beds</p>
+                <p class="stat-value">{{ total_beds }}</p>
+            </div>
+            <div class="stat">
+                <p class="stat-title">Occupied Beds</p>
+                <p class="stat-value">{{ occupied_beds }}</p>
+            </div>
+            <div class="stat">
+                <p class="stat-title">Free Beds</p>
+                <p class="stat-value">{{ free_beds }}</p>
+            </div>
+        </div> -->
+         
+
+
+        <h2 class="reservations-title">Pending Reservations</h2>
+        <table class="reservations-table">
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th>Bed Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in pending_reservations %}
+                <tr>
+                    <td>{{ reservation.user.name }}</td>
+                    <td>{{ reservation.bed.get_bed_type_display }}</td>
+                    <td>
+                        <a href="{% url 'update_reservation' reservation.id 'confirm' %}">Confirm</a>
+                        <a href="{% url 'update_reservation' reservation.id 'cancel' %}">Cancel</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">No pending reservations.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2 class="reservations-title">Confirmed Reservations</h2>
+        <table class="reservations-table">
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th>Bed Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in confirmed_reservations %}
+                <tr>
+                    <td>{{ reservation.user.name }}</td>
+                    <td>{{ reservation.bed.get_bed_type_display }}</td>
+                    <td><button class="disbtn"><a href="{% url 'discharge' reservation.id %}" >Discharge</a></button></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="2">No confirmed reservations.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+
+</body>
+</html>
+
+{% endblock %}

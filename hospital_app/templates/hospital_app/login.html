@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Header Styles (Reused from the register page) */
+        header {
+            background-color: #333;
+            padding: 15px 0;
+            text-align: center;
+            color: white;
+            width:100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'hos_bed.jpg'%}");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .active{
+    background-color: #f7f7f7;
+    font-size: large;
+    color: #333;
+    padding: 5px; }
+
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin-top: 20px; /* Adjust margin for better spacing with the header */
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .user-type {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header (Reused from the register page) -->
+    <header>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'register' %}">Register</a>
+            <a href="{% url 'login' %}" class="active">Login</a>
+        </nav>
+    </header>
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <h2>Login</h2>
+
+        <!-- Display error message if it exists -->
+        {% if messages %}
+        <div class="error-message">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="user-type">
+            <label>
+                <input type="radio" name="user_type" value="patient" checked>
+                Patient
+            </label>
+            <label>
+                <input type="radio" name="user_type" value="hospital">
+                Hospital
+            </label>
+        </div>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+
+        <input type="submit" value="Login">
+    </form>
+</body>
+
+</html>

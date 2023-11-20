@@ -1,0 +1,118 @@
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Dashboard</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #fffde7, #fff9c4);
+            background-attachment: fixed;
+            background-image: url('https://raw.githubusercontent.com/saatvik333/hbms-dbms/main/static/assets/bg.jpg');
+        }
+
+        .dashboard-container {
+            max-width: 960px;
+            margin: 2em auto;
+            padding: 2em;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .dashboard-title {
+            font-size: 1.5em;
+            color: #333;
+            text-align: center;
+            padding: 0.5em;
+        }
+
+        .bed-type {
+            background: #fff8e1;
+            padding: 1em;
+            margin-bottom: 1em;
+            border-left: 4px solid #ffd600;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            text-align: center;
+            color: #333;
+        }
+
+        .reservations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2em;
+        }
+
+            .reservations-table th,
+            .reservations-table td {
+                padding: 0.5em;
+                border-bottom: 1px solid #eee;
+                background-color: #fff;
+                text-align: left;
+            }
+
+            .reservations-table th {
+                background-color: #fffde7;
+            }
+
+            .reservations-table a {
+                display: inline-block;
+                text-decoration: none;
+                color: #fff;
+                padding: 0.3em 0.6em;
+                border-radius: 4px;
+                transition: background-color 0.3s ease;
+            }
+
+                .reservations-table a[href*="confirm"] {
+                    background-color: #81c784;
+                }
+
+                .reservations-table a[href*="cancel"] {
+                    background-color: #e57373;
+                }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <h1 class="dashboard-title">Add Beds</h1>
+        <div class="bed-status-container">
+            <form action="{% url 'Add_Bed'%}">
+                <!-- Repeat this block for each bed type (ICU, General, Private) -->
+                <div class="bed-type">
+
+                    <h3>Type of Bed:</h3>
+                    <div class="stat">
+                        <select name="Bed">
+                            <option value="GEN">General</option>
+                            <option value="ICU">ICU</option>
+                            <option value="PRI">Private</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bed-type">
+                    <h3>Number of Beds:</h3>
+                    <input type="text" name="num" />
+                </div>
+                <input type="submit" value="Add" />
+            </form>
+
+        </div>
+    </div>
+</body>
+{% endblock %}

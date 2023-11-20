@@ -1,0 +1,191 @@
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f8f9fa;
+            color: #495057;
+            background-image: url('https://raw.githubusercontent.com/saatvik333/hbms-dbms/main/static/assets/bg.jpg');
+            background-size: cover;
+        }
+
+        header {
+            background-color: #333;
+            padding: 15px 0;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+        }
+
+            header a {
+                color: white;
+                text-decoration: none;
+                margin: 0 15px;
+                font-size: 18px;
+            }
+
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .active {
+            background-color: #f7f7f7;
+            font-size: large;
+            color: #333;
+            padding: 5px;
+        }
+
+        h2, h3 {
+            color: #5b7f97;
+        }
+
+        .table {
+            margin-top: 1rem;
+        }
+
+            .table thead {
+                background-color: #5b7f97;
+                color: #fff;
+            }
+
+            .table tbody tr:hover {
+                background-color: #e9ecef;
+            }
+
+        .btn-primary {
+            background-color: #5b7f97;
+            border: none;
+        }
+
+            .btn-primary:hover {
+                background-color: #3e5f73;
+            }
+
+        .nav-tabs .nav-link.active {
+            background-color: #5b7f97;
+            color: #fff;
+            border: none;
+        }
+
+        .nav-tabs .nav-link {
+            color: #5b7f97;
+        }
+
+        .alert {
+            margin-top: 1rem;
+        }
+
+        /* Add media queries for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'home' %}">HBBS Home</a>
+        <a href="{% url 'dashboard' %}" class="active">Dashboard</a>
+        <a href="{% url 'reservation_status' %}">Reservation Status</a>
+        <a href="{% url 'logout' %}">Logout</a>
+
+    </header>
+    <div class="container mt-5">
+
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        <h2>Dashboard</h2>
+
+        <!-- Tabs navigation -->
+        <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="patient-tab" data-toggle="tab" href="#patient" role="tab" aria-controls="patient" aria-selected="true">Patient Dashboard</a>
+            </li>
+        </ul>
+
+        <!-- Tabs content -->
+
+
+        <div class="tab-content" id="dashboardTabsContent">
+            <div class="tab-pane fade show active" id="patient" role="tabpanel" aria-labelledby="patient-tab">
+                <h3 class="mt-3">Welcome, Patient</h3>
+                <!-- Patient-specific content here -->
+                <p>Here you can view available hospitals, beds, and reservation details.</p>
+
+                <!-- Table displaying hospital details and bed availability -->
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Hospital Name</th>
+                            <th>Location</th>
+                            <th>Available Beds</th>
+                            <th>Reserve</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for hospital_data in hospitals %}
+                        <tr>
+                            <td>{{ hospital_data.hospital.hospitalName }}</td>
+                            <td>{{ hospital_data.hospital.area }}</td>
+                            <td>
+                                ICU: {{ hospital_data.available_icu_beds }}<br>
+                                General: {{ hospital_data.available_gen_beds }}<br>
+                                Private: {{ hospital_data.available_pri_beds }}
+                            </td>
+                            <td>
+                                <form action="{% url 'make_reservation' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="hospital_id" value="{{ hospital_data.hospital.id }}">
+                                    <select name="bed_type">
+                                        <option value="ICU">ICU</option>
+                                        <option value="GEN">General</option>
+                                        <option value="PRI">Private</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Reserve</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Bed Booking System</title>
+    <link rel="icon" href="{% static 'hospital.jpg'%}" type="image/png">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #333;
+            padding: 15px 0;
+            text-align: center;
+            color: white;
+        }
+
+            header a {
+                color: white;
+                text-decoration: none;
+                margin: 0 15px;
+                font-size: 18px;
+            }
+            .active{
+    background-color: #f7f7f7;
+    font-size: large;
+    color: #333;
+    padding: 5px;
+
+}
+
+        /* Hero Section Styles */
+        .hero-section {
+            background-image: url("{% static 'hos_home.gif'%}");
+            background-size: cover;
+            background-position: center;
+            color: #000000;
+            text-align: center;
+            padding: 100px 20px;
+            height: 50vh;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+            .hero-section h1 {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+
+            .hero-section p {
+                font-size: 18px;
+                margin-bottom: 40px;
+            }
+
+        /* Overview Section Styles */
+        .overview-section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+            .overview-section h2 {
+                font-size: 36px;
+                margin-bottom: 20px;
+            }
+
+            .overview-section p {
+                font-size: 18px;
+                line-height: 1.6;
+            }
+
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a href="{% url 'home' %}" class="active">Home</a>
+        <a href="#aboutus">About Us</a>
+        <a href="#contact">Contact</a>
+        <a href="{% url 'register' %}">Register</a>
+        <a href="{% url 'login' %}">Login</a>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>Welcome to the Hospital Bed Booking System</h1>
+        <p>Efficiently manage and book hospital beds online for better healthcare services.</p>
+    </div>
+
+    <!-- Overview Section -->
+    <div class="overview-section" id="aboutus">
+        <h2>About Us</h2>
+        <p>
+            Our Hospital Bed Booking System offers a user-friendly platform for both patients and hospital staff.
+            Easily check bed availability, book a bed, and manage patient admissions seamlessly.
+        </p>
+        <p>
+            Features include real-time bed status updates, patient information management, and secure online transactions.
+        </p>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="overview-section" id="contact">
+        <h2>Contact Us</h2>
+        <p>
+            Have questions or need assistance? Feel free to reach out to our support team.
+        </p>
+        <p>
+            Email: supportus@hospitalbedbooking.com <br>
+            Phone: +1 (999) 456-7890
+        </p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2023 Hospital Bed Booking System
+        <br>
+        <h5>United States| Canada| India</h5>
+        <br>
+        <p>All the bookings are subjected to hospital policies and we are not reponsible for any legal Issues.</p>
+    </footer>
+</body>
+
+</html>

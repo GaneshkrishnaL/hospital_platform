@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css">
+    <title>Registration</title>
+    <style>
+     /* Styles for the header menu */
+     header {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+            header a {
+                color: #fff;
+                text-decoration: none;
+                margin: 0 15px;
+                font-size: 18px;
+            }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'hos_bed.jpg'%}");
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .active{
+    background-color: #f7f7f7;
+    font-size: large;
+    color: #333;
+    padding: 5px;}
+
+        form {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #555;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #2e60e7;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+
+        .radio-group {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+            .radio-group label {
+                margin-right: 30px;
+                font-weight: normal;
+                cursor: pointer;
+            }
+
+            .radio-group input[type="radio"] {
+                margin-right: 5px;
+                cursor: pointer;
+            }
+
+        #common_fields,
+        #patient_fields,
+        #hospital_fields {
+            margin-top: 30px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'register' %}" class="active">Register</a>
+            <a href="{% url 'login' %}">Login</a>
+        </nav>
+    </header>
+
+    <!-- Form -->
+    <form action="{% url 'register_view' %}" method="post">
+        {% csrf_token %}
+        
+
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+        <h2>Registration</h2>
+
+        <label>
+            <input type="radio" name="user_type" value="patient" checked>
+            Patient
+        </label>
+        <label>
+            <input type="radio" name="user_type" value="hospital">
+            Hospital
+        </label>
+
+        <div id="common_fields">
+            <label>Email:</label>
+            <input type="email" name="email" required>
+            <label>Password (Minimum 8 characters with at least one special character(!@#$%^&*), one number and letter):</label>
+            <input type="password" name="password" required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$" required>
+        </div>
+
+        <div id="patient_fields">
+            <label>Name:</label>
+            <input type="text" name="name" required>
+        
+            <label>Phone (Exactly 10 digits):</label>
+            <input type="text" name="phone" pattern="\d{10}" title="Phone number must be exactly 10 digits" required>
+            
+            
+        
+            <label>Age:</label>
+            <input type="number" name="age" required>
+        
+            <label>Gender:</label>
+            <select name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        
+            <label>Address:</label>
+            <textarea name="address" required></textarea>
+        
+            <label>Blood Group:</label>
+            <select name="bloodGroup" required>
+                <option value="" selected>Select</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+
+            </select>
+        </div>
+
+
+
+        <div id="hospital_fields" style="display: none;">
+            <label>Hospital Name:</label>
+            <input type="text" name="hospitalName" required>
+            
+
+            <label>Phone (Exactly 10 digits):</label>
+            <input type="text" name="hospital_phone" pattern="\d{10}" title="Phone number must be exactly 10 digits" required>
+            
+            <label>Location:</label>
+            <textarea name="location" required></textarea>
+            <label>Area:</label>
+            <textarea name="area" required></textarea>
+
+            <label>General Beds:</label>
+            <input type="number" name="gen_beds" min="0" step="1" required>
+            
+            <label>ICU Beds:</label>
+            <input type="number" name="icu_beds" min="0" step="1" required>
+            
+            <label>Private Beds:</label>
+            <input type="number" name="pri_beds" min="0" step="1" required>
+            
+        </div>
+        
+
+        <input type="submit" value="Register">
+        <!-- At the end of your form, before the closing </form> tag -->
+        <div style="text-align: center; margin-top: 20px;">
+            Already registered? <a href="{% url 'login' %}">Login here</a>
+        </div>
+
+    </form>
+
+    <script>
+
+        // Toggle between Patient and Hospital fields using JavaScript
+        const userTypeRadios = document.querySelectorAll('input[name="user_type"]');
+        const patientFields = document.getElementById('patient_fields');
+        const hospitalFields = document.getElementById('hospital_fields');
+
+        userTypeRadios.forEach(radio => {
+    radio.addEventListener('change', (event) => {
+        if (event.target.value === 'patient') {
+            patientFields.style.display = 'block';
+            hospitalFields.style.display = 'none';
+
+            // Enable fields in patientFields and disable fields in hospitalFields
+            patientFields.querySelectorAll('input, select, textarea').forEach(el => el.disabled = false);
+            hospitalFields.querySelectorAll('input, select, textarea').forEach(el => el.disabled = true);
+        } else {
+            patientFields.style.display = 'none';
+            hospitalFields.style.display = 'block';
+
+            // Enable fields in hospitalFields and disable fields in patientFields
+            hospitalFields.querySelectorAll('input, select, textarea').forEach(el => el.disabled = false);
+            patientFields.querySelectorAll('input, select, textarea').forEach(el => el.disabled = true);
+        }
+    });
+});
+
+
+// Initial disabling of fields based on the default selection
+if (document.querySelector('input[name="user_type"]:checked').value === 'patient') {
+    hospitalFields.querySelectorAll('input, select, textarea').forEach(el => el.disabled = true);
+} else {
+    patientFields.querySelectorAll('input, select, textarea').forEach(el => el.disabled = true);
+}
+
+    </script>
+</body>
+</html>

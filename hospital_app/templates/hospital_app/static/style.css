@@ -1,0 +1,21 @@
+ /* Header Styles (Reused from the register page) */
+        header {
+            background-color: #333;
+            padding: 15px 0;
+            text-align: center;
+            color: white;
+            width:100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
